@@ -32,18 +32,15 @@ class JsLoader implements ArgumentInterface
 
     public function requireOnce(string $jsFilePath): string
     {
-        $cacheCode = $this->makeUniqueString($jsFilePath);
-        $content = $this->cache->load(sprintf('js_load_%s', $this->makeUniqueString($jsFilePath)));
+        $cacheCode = sprintf('js_load_%s', $this->makeUniqueString($jsFilePath));
+        $content = $this->cache->load($cacheCode);
 
-        if (empty($content)) {
+        if (!$content) {
             $path = $this->resolver->getTemplateFileName($jsFilePath);
             $content = $this->file->fileGetContents($path);
 
-            $this->cache->save(sprintf('js_load_%s', $content));
+            $this->cache->save($content, $cacheCode, ['js_load']);
         }
-
-        $path = $this->resolver->getTemplateFileName($jsFilePath);
-        $content = $this->file->fileGetContents($path);
 
         return sprintf("<script>%s</script>", $content);
     }
