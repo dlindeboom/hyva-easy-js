@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Hyva\EasyJs\ViewModel;
 
+use Hyva\EasyJs\Lib\JsRegistry;
 use Magento\Framework\Filesystem\Driver\File;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\View\Element\Template\File\Resolver;
@@ -23,7 +24,21 @@ class JsLoader implements ArgumentInterface
     {
         $path = $this->resolver->getTemplateFileName($jsFilePath);
         $content = $this->file->fileGetContents($path);
+        $jsReqistry = new JsRegistry();
+        $code = $jsReqistry->getCode();
 
-        return sprintf("<script>%s</script>", $content);
+        return sprintf(<<<SCRIPT
+
+            <script>
+
+                const easyJs = (name, callback) => {
+                    window['%s_' + name] = callback;
+                };
+
+                %s
+
+            </script>
+
+        SCRIPT, $code, $content);
     }
 }
