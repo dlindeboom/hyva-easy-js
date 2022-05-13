@@ -20,14 +20,14 @@ class JsLoader implements ArgumentInterface
         $this->resolver = $resolver;
     }
 
-    public function require(string $jsFilePath): string
+    public function require(string $jsFilePath): JsRegistry
     {
         $path = $this->resolver->getTemplateFileName($jsFilePath);
         $content = $this->file->fileGetContents($path);
         $jsReqistry = new JsRegistry();
         $code = $jsReqistry->getCode();
 
-        return sprintf(<<<SCRIPT
+        echo sprintf(<<<SCRIPT
 
             <script>
 
@@ -40,5 +40,7 @@ class JsLoader implements ArgumentInterface
             </script>
 
         SCRIPT, $code, $content);
+
+        return $jsReqistry;
     }
 }

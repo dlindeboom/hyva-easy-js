@@ -11,7 +11,7 @@ namespace Hyva\EasyJs\Lib;
 
 class JsRegistry
 {
-    const CODES = [];
+    static array $codes = [];
 
     private int $code;
 
@@ -24,11 +24,11 @@ class JsRegistry
     {
         $code = random_int(0, PHP_INT_MAX);
 
-        if (in_array($code, self::CODES)) {
+        if (in_array($code, self::$codes)) {
             return self::getRandomCode();
         }
 
-        self::CODES[] = $code;
+        self::$codes[] = $code;
         return $code;
     }
 
