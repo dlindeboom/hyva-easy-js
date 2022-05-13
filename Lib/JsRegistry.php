@@ -39,6 +39,6 @@ class JsRegistry
 
     public function getFunction(string $function): string
     {
-        return sprintf('window.%s_%s', $this->code, $function);
+        return sprintf('window.%s_%s', $function, $this->code);
     }
 }

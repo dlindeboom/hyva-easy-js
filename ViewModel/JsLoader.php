@@ -32,7 +32,7 @@ class JsLoader implements ArgumentInterface
             <script>
 
                 const easyJs = (name, callback) => {
-                    window['%s_' + name] = callback;
+                    window[name + '_%s'] = callback;
                 };
 
                 %s
